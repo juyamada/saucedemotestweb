@@ -1,2 +1,8 @@
-TesteCompra.class
+pages\ProductsPage.class
+pages\CommonPage.class
+pages\HomePage.class
 steps\ComprarProduto.class
+steps\Runner.class
+pages\CheckoutPage.class
+steps\Hooks.class
+pages\Base.class

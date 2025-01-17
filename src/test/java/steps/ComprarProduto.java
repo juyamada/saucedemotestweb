@@ -18,75 +18,67 @@ import io.cucumber.java.pt.E;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import pages.HomePage;
+import pages.ProductsPage;
+import pages.Base;
+import pages.CheckoutPage;
 
 
 public class ComprarProduto {
-    WebDriver driver;  //objeto do selenium webdriver
+    // Atributos
+    final WebDriver driver;
+    private HomePage homePage;
+    private ProductsPage productsPage;
+    private CheckoutPage checkoutPage;
+
+    // Construtor
+    public ComprarProduto(Base base){
+        this.driver = base.driver;
+    }
+
     String produto;
     String preco;
 
-    @Before
-    public void iniciar(){
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
-        driver.manage().window().maximize();
-    }
-
-    @After
-    public void finalizar(){
-        driver.quit();
-    }
-    
+    //As anotações Before e After ficam no Hooks.java
 
     @Dado("que acessei o site {string}")
     public void que_acessei_o_site(String url) {
-        driver.get(url);
+        homePage = new HomePage(driver);
+        homePage.acessarHomePage(url);
+        assertEquals("Swag Labs", homePage.lerNomeDaGuia());
     }
     
-    @E("preenchi o username com {string}")
+    @E("preenchi o usuario com {string}")
     public void preenchi_o_username_com_standard_user(String username) {
-        {
-            WebElement usuario = driver.findElement(By.id("user-name"));
-            usuario.click();
-            usuario.sendKeys(username);
-        }
+        homePage.preencherUsername(username);
     }
 
-    @E("preenchi o password com {string}")
+    @E("preenchi a senha com {string}")
     public void preenchi_o_password_com(String password) {
-        {
-            WebElement senha = driver.findElement(By.id("password"));
-            senha.click();
-            senha.sendKeys(password);
-            driver.findElement(By.id("login-button")).click();
-        }
-    
+       homePage.preencherPassword(password);
+    }
+    @E("cliquei no botao de login") 
+    public void cliquei_no_botao_de_login(){
+        homePage.clicarBotaoLogin();
     }
 
     @Quando("adicionei o produto {string} no carrinho")
-    public void adicionei_o_produto_no_carrinho(String produtoNome) {
-       
-        String produtoId= "";
+    public void adicionei_o_produto_no_carrinho(String productId) {
+       productsPage.adicionarProdutoCarrinho(productId);
 
-        if (produtoNome.equals ("Sauce Labs Backpack")){
-            produtoId = "add-to-cart-sauce-labs-backpack";
-        } else if (produtoNome.equals ("Sauce Labs Bolt T-Shirt")){
-            produtoId = "add-to-cart-sauce-labs-bolt-t-shirt";
-        }
-        
-        driver.findElement(By.id(produtoId)).click();
-    
     }
 
-    @Entao("o carrinho lista o {string} escolhido com o preço {string}")
-    public void o_carrinho_lista_o_escolhido_com_o_preço(String produtoEsperado, String precoEsperado) {
-        driver.findElement(By.cssSelector("[data-test='shopping-cart-link']")).click();
-        
-        String nomeProduto = driver.findElement(By.className("inventory_item_name")).getText();
-        assertEquals(produtoEsperado, nomeProduto);
+    @Entao("o carrinho lista o produto{string} escolhido com o preço {string}")
+    public void o_carrinho_lista_o_escolhido_com_o_preço(String produto, String preço) {
+       
+        productsPage.clicarCarrinho();
 
-        String precoProduto = driver.findElement(By.className(("inventory_item_price"))).getText();
-        assertEquals(precoEsperado, precoProduto);
+        CheckoutPage checkoutPage = new CheckoutPage(driver); //instancia a checkoutPage
+
+        assertEquals("Your Cart", checkoutPage.getCartTitle());
+        assertEquals(produto, checkoutPage.getProductName());
+        assertEquals(preço,checkoutPage.getProductPrice());
+        
+
     }
 }
