@@ -17,10 +17,10 @@ public class CheckoutPage extends CommonPage{
     @FindBy(css = "span[data-test='title']")
     WebElement cartTitle;
 
-    @FindBy(css = "div[data-test='inventory_item_name']")
+    @FindBy(css = "div[data-test='inventory-item-name']")
     WebElement productName;
 
-    @FindBy(css = "div[data-test='inventory_item_price']")
+    @FindBy(css = "div[data-test='inventory-item-price']")
     WebElement productPrice;
     
     //ações dos elementos

@@ -8,7 +8,11 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
     features = { "src/test/resources/features" }, // caminho para a feature
     glue =     { "steps" },                       // caminho para a automação
-    dryRun = false,                               // configuração do log 
+    plugin = {"pretty", 
+              "html:target/cucumber-reports.html", // adicionei saída formatada
+              "json:target/cucumber-reports/cucumber.json" // Relatório JSON
+},             
+    dryRun = true,                               // configuração do log 
     monochrome = true
 
 ) 

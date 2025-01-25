@@ -14,8 +14,6 @@ public class ProductsPage extends CommonPage{
     }
 
     // mapear elementos
-    @FindBy (id = "add-to-cart-sauce-labs-backpack")
-    WebElement addProduct;
 
     @FindBy (css = "a[data-test='shopping_cart_link']")
     WebElement cartIcon;
@@ -23,8 +21,9 @@ public class ProductsPage extends CommonPage{
 
     // ação dos elementos
 
-    public void adicionarProdutoCarrinho(String productId){
-        driver.findElement(By.id("add-to-cart-" + productId)).click();
+    public void adicionarProdutoCarrinho(String productName){
+        String cssSelector = String.format("button[id='add-to-cart-%s']", productName); //forma dinamica de selecionar produtos diferentes de acordo com os proddutos registrados na feature
+        driver.findElement(By.cssSelector(cssSelector)).click();
 
     }    
     public void clicarCarrinho(){

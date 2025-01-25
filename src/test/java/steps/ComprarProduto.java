@@ -4,20 +4,10 @@ import io.cucumber.java.pt.Entao;
 
 import static org.junit.Assert.assertEquals;
 
-import java.time.Duration;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.E;
-import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import pages.HomePage;
 import pages.ProductsPage;
 import pages.Base;
@@ -63,13 +53,13 @@ public class ComprarProduto {
     }
 
     @Quando("adicionei o produto {string} no carrinho")
-    public void adicionei_o_produto_no_carrinho(String productId) {
-       productsPage.adicionarProdutoCarrinho(productId);
+    public void adicionei_o_produto_no_carrinho(String productName) {
+       productsPage.adicionarProdutoCarrinho(productName);
 
     }
 
-    @Entao("o carrinho lista o produto{string} escolhido com o preço {string}")
-    public void o_carrinho_lista_o_escolhido_com_o_preço(String produto, String preço) {
+    @Entao("o carrinho lista o {string} escolhido com o preco {string}")
+    public void o_carrinho_lista_o_escolhido_com_o_preco(String produto, String preco) {
        
         productsPage.clicarCarrinho();
 
@@ -77,7 +67,7 @@ public class ComprarProduto {
 
         assertEquals("Your Cart", checkoutPage.getCartTitle());
         assertEquals(produto, checkoutPage.getProductName());
-        assertEquals(preço,checkoutPage.getProductPrice());
+        assertEquals(preco,checkoutPage.getProductPrice());
         
 
     }
